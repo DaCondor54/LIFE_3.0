@@ -1,0 +1,16 @@
+﻿1>------ Build started: Project: Life3.0, Configuration: Debug x64 ------
+1>BlackJack.cpp
+1>Hangman.cpp
+1>C:\Users\Enrique\source\repos\LIFE_3.0\Life3.0\Hangman.cpp(27): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+1>Life3.0.cpp
+1>Casino.cpp
+1>C:\Users\Enrique\source\repos\LIFE_3.0\Life3.0\Casino.cpp(74): warning C4018: '>': signed/unsigned mismatch
+1>C:\Users\Enrique\source\repos\LIFE_3.0\Life3.0\Casino.cpp(80): warning C4018: '>': signed/unsigned mismatch
+1>MainMenu.cpp
+1>Person.cpp
+1>Roulette.cpp
+1>Source.cpp
+1>Generating Code...
+1>Life3.0.vcxproj -> C:\Users\Enrique\Source\Repos\LIFE_3.0\x64\Debug\Life3.0.exe
+1>Done building project "Life3.0.vcxproj".
+========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========
