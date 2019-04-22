@@ -55,10 +55,10 @@ void Roulette::GameMenu() {
 			megaprint();
 			cout << "\nwould you like to bet inside(0) or outside(1) : ";
 			cin >> decision;
-			if (decision == 0) {
+			if (decision == T_Inside) {
 				Inside();
 			}
-			else if(decision == 1){
+			else if(decision == T_Outside){
 				Outside();
 			}
 			if (ba != 1) {
@@ -83,7 +83,7 @@ void Roulette::GameMenu() {
 void Roulette::Inside() {
 	cout << "\nstraight bet(0), split bet(1) , corner bet(2), street bet(3), double street bet(4) : ";
 	cin >> n;
-	if (n == 0) {
+	if (n == I_straight) {
 		withinrange();
 		howmany();
 		checkchipsr();
@@ -92,7 +92,7 @@ void Roulette::Inside() {
 			Youwon();
 		}
 	}
-	else if (n == 1) {
+	else if (n == I_split) {
 		withinrange();
 		do {
 			wino = 0;
@@ -148,7 +148,7 @@ void Roulette::Inside() {
 			Youwon();
 		}
 	}
-	else if (n == 2) {
+	else if (n == I_corner) {
 		withinrange();
 		do {
 			wino = 0;
@@ -170,7 +170,7 @@ void Roulette::Inside() {
 			}
 		}
 	}
-	else if (n == 3) {
+	else if (n == I_street) {
 		withinrange();
 		howmany();
 		checkchipsr();
@@ -181,7 +181,7 @@ void Roulette::Inside() {
 			}
 		}
 	}
-	else if (n == 4) {
+	else if (n == I_Dstreet) {
 		withinrange();
 		howmany();
 		checkchipsr();
@@ -202,42 +202,42 @@ void Roulette::Outside() {
 	howmany();
 	checkchipsr();
 	resultr = ball % 2;
-	if (resultr == n && (n == 0 || n == 1)) {
+	if (resultr == n && (n == O_EVEN || n == O_ODD)) {
 		Youwon();
 	}
 	for (int i = 0; i < 18; i++) {
-		if (ball == reda[i] && n == 2) {
+		if (ball == reda[i] && n == O_RED) {
 			Youwon();
 		}
 	}
 	for (int i = 0; i < 18; i++) {
-		if (ball == blacka[i] && n == 3) {
+		if (ball == blacka[i] && n == O_BLACK) {
 			Youwon();
 		}
 	}
-	if (ball >= 1 && ball <= 18 && n == 4) {
+	if (ball >= 1 && ball <= 18 && n == O_1to18) {
 		Youwon();
 	}
-	else if (ball >= 19 && ball <= 36 && n == 5) {
+	else if (ball >= 19 && ball <= 36 && n == O_19to36) {
 		Youwon();
 	}
-	if (n == 6 || n == 7) {
+	if (n == O_Twelve || n == O_Columns) {
 		col12();
-		if (ball >= 1 && ball <= 12 && n == 6 && place == 1) {
+		if (ball >= 1 && ball <= 12 && n == O_Twelve && place == 1) {
 			outcome.apuesta *= 2;
 			Youwon();
 		}
-		else if (ball >= 13 && ball <= 24 && n == 6 && place == 2) {
+		else if (ball >= 13 && ball <= 24 && n == O_Twelve && place == 2) {
 			outcome.apuesta *= 2;
 			Youwon();
 		}
-		else if (ball >= 25 && ball <= 36 && n == 6 && place == 3) {
+		else if (ball >= 25 && ball <= 36 && n == O_Twelve && place == 3) {
 			outcome.apuesta *= 2;
 			Youwon();
 		}
 		for (int j = 1; j < 4; j++) {
 			for (int i = j; i <= 36; i += 3) {
-				if (ball == i && place == j && n == 7) {
+				if (ball == i && place == j && n == O_Columns) {
 					outcome.apuesta *= 2;
 					Youwon();
 				}
@@ -307,10 +307,10 @@ void  Roulette::howmany() {
 
 void Roulette::col12() {
 	do {
-		if (n == 6) {
+		if (n == O_Twelve) {
 			cout << "\nIn which 12 would you like to bet : ";
 		}
-		else if (n == 7) {
+		else if (n == O_Columns) {
 			cout << "\nIn which column would you like to bet : ";
 		}
 		cin >> place;
@@ -327,7 +327,7 @@ void Roulette::Youwon() {
 }
 
 void Roulette::withinrange() {
-	if (n == 0 || n == 1) {
+	if (n == I_straight || n == I_split) {
 		do {
 			cout << "\nwhere would you like to bet : ";
 			cin >> place;
@@ -336,13 +336,13 @@ void Roulette::withinrange() {
 			}
 		} while (place < 0 || place  > 36);
 	}
-	else if (n == 2 || n == 3 || n == 4) {
+	else if (n == I_corner || n == I_street || n == I_Dstreet) {
 		do {
-			if (n == 2 || n == 4) {
+			if (n == I_corner || n == I_Dstreet) {
 				cout << "\nIn what vertical line(line of the roulette image) would you like to bet(1) tot(11) : ";
 				n = 2;
 			}
-			else if (n == 3) {
+			else if (n == I_street) {
 				cout << "\nIn what vertical row(street) would you like to bet(1) tot(12) : ";
 			}
 			cin >> place;
