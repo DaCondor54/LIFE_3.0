@@ -18,7 +18,8 @@ public:
 	void findme();
 	void printme();
 	void superprint();
-	int rep, error, choice, counter, i, gro, sup, death;
+	int rep, error, choice, i, sup, death;
+	std::size_t gro, counter;
 	bool isit, decision, isit2;
 	char x;
 	std::size_t a, com;

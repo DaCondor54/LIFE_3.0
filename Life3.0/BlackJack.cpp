@@ -9,6 +9,11 @@ BlackJack::BlackJack() {
 	x = &var;
 	y = &vars;
 	bustt = &b;
+	changer1 = "\0";
+	changer2 = "\0";
+	changer3 = "\0";
+	sebastien = 0;
+	boby = 0;
 }
 
 //**********This is beginning to BLACKJACK func**********
@@ -17,22 +22,27 @@ void BlackJack::GameMenu() {
 	do {
 		this_thread::sleep_for(chrono::seconds(1));
 		Casino::Bet(1, Casino::Cbalance);
-		*x = rand() % 10 + 2;
-		*y = rand() % 10 + 2;
-		cout << "\nPlayer 1: " << *x << " " << *y << "\n";
+		*x = rand() % 13 + 2;
+		*y = rand() % 13 + 2;
+		changevalue(*x, changer1);
+		changevalue(*y, changer2);
+		cout << "\nPlayer 1: " << changer1 << " " << changer2 << "\n";
+		//cout << "\nPlayer 1: " << *x << " " << *y << "\n";
 		this_thread::sleep_for(chrono::seconds(1));
 		outcome.resultado = *x + *y;
 		if (outcome.resultado == 21) {
 			BlackJ();           //BlackJack
 		}
 		else {
-			z = rand() % 10 + 2;
+			z = rand() % 13 + 2;
 			w = rand() % 10 + 2;
 			som = z + w;
-			cout << "Dealer: " << z << " ?\n";
+			changevalue(z, changer1);
+			cout << "Dealer: " << changer1 << " ?\n";
 			HitP();               //Card Loop
 			if (outcome.resultado <= 21 or bou == 1) {
-				cout << "Dealer: " << z << " " << w << "\n";
+				changevalue(w, changer2);
+				cout << "Dealer: " << changer1 << " " << changer2 << "\n";
 				if (som < 17) {
 					HitD();         //Dealer card loop
 				}
@@ -78,29 +88,30 @@ void BlackJack::Endgame() {
 void BlackJack::HitP() {
 	do {
 		//DDcond = 0;
-		unsigned int sebastien = outcome.apuesta * 2;
+		sebastien = outcome.apuesta * 2;
 		if (*x == *y) {
-			cout << "\nHit(0), Stay(1), Double Down(2), Split(3), Change Hand(4) : ";
+			cout << "\nStay(0), Hit(1), Double Down(2), Split(3), Change Hand(4) : ";
 		}
 		else if (*x == *y and DDcond > 0) {
-			cout << "\nHit(0), Stay(1), Split(3), Change Hand(4) : ";
+			cout << "\nStay(0), Hit(1), Split(3), Change Hand(4) : ";
 		}
 		else if (DDcond > 0) {
-			cout << "\nHit(0) or Stay(1): ";
+			cout << "\nStay(0) or Hit(1): ";
 		}
 		else {
-			cout << "\nHit(0), Stay(1) or Double Down(2) : ";
+			cout << "\nStay(0), Hit(1) or Double Down(2) : ";
 		}
 		cin >> n;
-		if (n == 0 or n == 2) {
-			if (n == 2 and (DDcond > 0 || balance < sebastien)) {
-				n = 0;
+		if (n == Bhit or n == BDD) {
+			if (n == BDD and (DDcond > 0 || balance < sebastien)) {
+				n = Bhit;
 				cout << "You can't Double down";
 			}
 			else {
-				t = rand() % 10 + 2;
+				t = rand() % 13 + 2;
+				changevalue(t, changer3);
+				cout << "You got a: " << changer3 << "\n";
 				++DDcond;
-				cout << "You got a: " << t << endl;
 				this_thread::sleep_for(chrono::seconds(1));
 				outcome.resultado += t;
 				if (outcome.resultado > 21 and repetir == 0) {
@@ -125,7 +136,7 @@ void BlackJack::HitP() {
 						for (it = outco.begin(); it != outco.end(); ++it) {
 							Bet(3, Cbalance);
 						}
-						n = 10;
+						n = Bleave;
 					}
 				}
 				else if (outcome.resultado > 21 and repetir > 0) {
@@ -141,7 +152,7 @@ void BlackJack::HitP() {
 					}
 					if (outcome.resultado > 21) {
 						outco.push_back(outcome);
-						int boby = 0;
+						boby = 0;
 						for (it = outco.begin(); it != outco.end(); ++it) {
 							++boby;
 							if (outco.size() == 2 and boby == 2) {
@@ -156,7 +167,7 @@ void BlackJack::HitP() {
 						++repetir;
 						*bustt += 1;
 						cout << *bustt << endl;
-						n = ((*bustt == 1) ? 4 : 10);
+						n = ((*bustt == 1) ? Bhand : Bleave);
 						cout << *bustt << "bob" << endl;
 						if (*bustt != 3) {
 							outco.pop_back();
@@ -166,59 +177,60 @@ void BlackJack::HitP() {
 						}
 					}
 				}
-				if (n == 2) {
+				if (n == BDD) {
 					++condi;
 					outcome.apuesta = outcome.apuesta * 2;
 					outco.push_back(outcome);
 					outcome.apuesta = outcome.apuesta / 2;
 					if (repetir > 0 and condi != 2 and condi != 3) {
-						n = 4;
-						cout << "haleluya\n\n";
+						n = Bhand;
+						
 					}
 					else {
-						n = 10;
-						cout << "haleluyasfasfasfasfasfa\n\n";
+						n = Bleave;
 					}
+						
 				}
 			}
 		}
-		if (n == 3 and *x == *y) {
+		if (n == Bsplit and *x == *y) {
 			outcome.resultado = *x;
 			cout << outcome.resultado << endl;
 			repetir++;
 		}
-		else if (n == 3 and *x != *y) {
+		else if (n == Bsplit and *x != *y) {
 			cout << "You Can't Split\n";
 		}
-		if (n == 4 and repetir > 0) {
+		if (n == Bhand and repetir > 0) {
 			if (outco.empty() and repetir != 2) {
 				outco.push_back(outcome);
 			}
 			outcome.resultado = *y;
 			cout << outcome.resultado << endl;
-			n = 0;
+			n = Bhit;
 			repetir++;
 			++* bustt;
 			++condi;
 			DDcond = 0;
 		}
-		else if (n == 4 and repetir < 1) {
+		else if (n == Bhand and repetir < 1) {
 			cout << "You didn't Split\n";
 		}
-		if (n != 10 && (n == 1 || n > 4)) {
+		if (n != Bleave && (n == Bstay || n > Bhand)) {
 			outco.push_back(outcome);
-			n = 10;
+			n = Bleave;
 		}
-	} while (n >= 0 and n < 5); // end of hitting cards loop
+	}while(n > Bstay  and n < Bleave); // end of hitting cards loop
 	DDcond = 0;
 }
 
 //**********dealer plays**********  
 void BlackJack::HitD() {
 	do {
-		t = rand() % 10 + 2;
+		t = rand() % 13 + 2;
 		this_thread::sleep_for(chrono::seconds(2));
-		cout << "Dealer got a: " << t << "\n\n";
+		changevalue(t, changer3);
+		cout << "Dealer got a: " << changer3 << "\n\n";
 		som += t;
 		if (som > 21) {
 			if (z == 11) {
@@ -239,4 +251,17 @@ void BlackJack::HitD() {
 			}
 		}
 	} while (som < 17);
+}
+
+void BlackJack::changevalue(int &x, string &y) {
+		switch (x) {
+		case 11: {x = 10; y = "J"; break; }
+		case 12: {x = 10; y = "Q"; break; }
+		case 13: {x = 10; y = "K"; break; }
+		case 14: {x = 11; y = "A"; break; }
+		default: {y = to_string(x); break; }
+		}
+	
+	
+
 }

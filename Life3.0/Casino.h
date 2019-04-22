@@ -15,9 +15,10 @@ public:
 	void Ccontinue();
 	void ViewB();
 	virtual void GameMenu();
+	virtual void Help();
 	int* cont;
 	int pcont, hange;
-	char q;
+	char q[1];
 	std::string Cresponse;
 	struct argm {
 		int resultado;

@@ -52,19 +52,20 @@ void MainMenu::MMenu() {
 		cout << "You have: " << balance << "$\n";
 		do {
 			if (job == 0) {
-				cout << "\nWhat would you like to do?\nGo to the Casino(c), Check balance(v), Search for a job(f): ";
+				cout << "\nWhat would you like to do?\nGo to the Casino(c), Check balance(v), Search for a job(f), Info(i): ";
 			}
 			else {
-				cout << "\nWhat would you like to do?\nGo to the Casino(c), Check balance(v), Go to work(p): ";
+				cout << "\nWhat would you like to do?\nGo to the Casino(c), Check balance(v), Go to work(p), Info(i) : ";
 			}
 			cin >> Todo[0];
 			switch (Todo[0]) {
-				case 'v': { this->ViewB(); break; }
-				case 'c': { gam1->GameMenu(); break; }
-				case 'p': {if (job == 1) { per1->Salary(); } else { cout << "You don't have a job\n"; }break; }
-				case 'f': {if (job == 0) { per1->newjob(); } else { cout << "You have a job\n"; }; break; }
+				case 'v': {	cin.clear();cin.ignore(256, '\n'); this->ViewB(); break; }
+				case 'c': {cin.clear(); cin.ignore(256, '\n'); gam1->GameMenu(); break; }
+				case 'p': {cin.clear(); cin.ignore(256, '\n'); if (job == 1) { per1->Salary(); } else { cout << "You don't have a job\n"; }break; }
+				case 'f': {cin.clear(); cin.ignore(256, '\n'); if (job == 0) { per1->newjob(); } else { cout << "You have a job\n"; }; break; }
+				case 'i': {cin.clear(); cin.ignore(256, '\n');this ->info(); break; }
 			}
-			if (Todo[0] != 'v' && Todo[0] != 'c' && Todo[0] != 'p' && Todo[0] != 'f' && Todo[0] != 'e') {
+			if (Todo[0] != 'v' && Todo[0] != 'c' && Todo[0] != 'p' && Todo[0] != 'f' && Todo[0] != 'e' && Todo[0] != 'i') {
 				cout << "That isn't an option\n\n";
 			}
 		} while (Todo[0] != 'e');
@@ -92,4 +93,16 @@ void MainMenu::Work(unsigned int& balances) {
 }
 void MainMenu::ViewB() {
 	cout << "\nYou have: " << balance << "$ in your bank account\n\n";
+}
+
+void MainMenu::info() {
+	this_thread::sleep_for(chrono::seconds(1));
+	cout << "This is some basic info\n";
+	this_thread::sleep_for(chrono::seconds(1));
+	cout << "This is a little game where you can go at the casino, work, check your balance and if you loose your job you can search for a new one \n";
+	this_thread::sleep_for(chrono::seconds(1));
+	cout << "The goal of the game is to become a sort of life simulator\n";
+	this_thread::sleep_for(chrono::seconds(1));
+	cout << "It tries at least\n";
+	this_thread::sleep_for(chrono::seconds(1));
 }

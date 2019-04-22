@@ -20,7 +20,6 @@ void Hangman::GameMenu() {
 	do {
 		Bet(1, Cbalance);
 		outcome.resultado = 1;
-		outco.push_back(outcome);
 		error = 0; isit = 0; counter = 0; isit2 = 0;
 		i = rand() % 27;
 		special = arrname[i];
@@ -34,9 +33,12 @@ void Hangman::GameMenu() {
 		} while (counter < gro and error < 6);
 		if (counter == gro) {
 			for (it = outco.begin(); it != outco.end(); ++it) {
+				outcome.apuesta *= 5;
+				outco.push_back(outcome);
 				Bet(2, Cbalance);
 			}
 		}
+		cin.clear(); cin.ignore(256, '\n');
 		Ccontinue();
 			v.clear();
 			wrong.clear();
@@ -58,7 +60,7 @@ void Hangman::stage() {
 	}
 }
 void Hangman::set() {
-	for (int i = 0; i < gro; i++) {
+	for (size_t i = 0; i < gro; i++) {
 		v.push_back('_');
 	}
 	stage();
@@ -130,6 +132,7 @@ void Hangman::check() {
 				}
 				cout << endl;
 				for (it = outco.begin(); it != outco.end(); ++it) {
+					outco.push_back(outcome);
 					Bet(3, Cbalance);
 				}
 			}

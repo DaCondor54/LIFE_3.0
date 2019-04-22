@@ -19,6 +19,7 @@ public:
 	MainMenu();
 	void MMenu();
 	virtual void ViewB();
+	void info();
 	void Work(unsigned int& balances);
 	int TotalE, counterD, bonuss, offday;
 	static bool job;

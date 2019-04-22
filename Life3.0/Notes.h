@@ -22,17 +22,17 @@ death; russian roulette, random death, death factor, Gabdub FACTOR,
 life 4.0 university,
 secret events WW3, secret agent,
 
-SUPER NOTES: CIN FAIL, CIN CLEAR Y CIN IGNORE
-HACER EL MENU
-HANGMAN AVISO DE MUERTE, MULTIPLICAR PLATA DEREPENTE
-AMPLIAR ROULETTE APRENDER SOBRE ESO
+SUPER NOTES: CIN FAIL, CIN CLEAR Y CIN IGNORE		!
+HACER EL MENU											!!!
+HANGMAN AVISO DE MUERTE, MULTIPLICAR PLATA DEREPENTE  !!!
+AMPLIAR ROULETTE APRENDER SOBRE ESO  !!!
 SUITS PARA BLACKJACK
 (((((( VERSION ONLINEGDB )))))))
 FINALMENTE PERFECCIONAR CLASS PERSON
 
 Roulette: !!!!
-minumum value of chips 1$,
-minimum bet 1$ | 100$ 
+minumum value of chips 1$,						!!!
+minimum bet 1$ | 100$							!!!
 straight bet: 1 mumber 35:1         ((36)) + 0   !!!
 split bet : 2 numbers (line) 17:1   ((60)) + 3 (0) !!!
 corner bet: 4 number (line) 8:1     ((22))         !!!
