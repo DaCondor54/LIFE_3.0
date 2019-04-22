@@ -4,7 +4,7 @@
 #include "Hangman.h"
 
 using namespace std;
-int Casino::Cbalance = 0;
+unsigned int Casino::Cbalance = 0;
 Casino::Casino()
 {
 	hange = 0;
@@ -23,6 +23,7 @@ void Casino::GameMenu() {
 	cout << "would you like to enter the Casino: : ";
 	cin >> Cresponse;
 	if (Cresponse == "yes") {
+		cout << "\n\n********WELCOME TO THE CASINO********\n";
 		Cbalance = balance;
 		do {
 			hange = rand() % 5 + 1;
@@ -58,7 +59,7 @@ void Casino::GameMenu() {
 }
 
 //**********This is beginning to Bet func**********
-void Casino::Bet(int bob, int& x) {
+void Casino::Bet(int bob,unsigned int& x) {
 
 	switch (bob) {
 	case 1: { do {

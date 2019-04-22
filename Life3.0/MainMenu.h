@@ -19,10 +19,10 @@ public:
 	MainMenu();
 	void MMenu();
 	virtual void ViewB();
-	void Work(int& balances);
+	void Work(unsigned int& balances);
 	int TotalE, counterD, bonuss, offday;
 	static bool job;
-	char Todo;
+	char Todo[1];
 	std::string response;
 	Person* per1;
 	Casino* gam1;
@@ -31,7 +31,7 @@ public:
 	static Hangman* num3;
 
 protected:
-	static int balance;
+	static unsigned int balance;
 };
 //Person
 #endif

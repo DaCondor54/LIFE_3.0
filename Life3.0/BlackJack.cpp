@@ -78,7 +78,7 @@ void BlackJack::Endgame() {
 void BlackJack::HitP() {
 	do {
 		//DDcond = 0;
-		int sebastien = outcome.apuesta * 2;
+		unsigned int sebastien = outcome.apuesta * 2;
 		if (*x == *y) {
 			cout << "\nHit(0), Stay(1), Double Down(2), Split(3), Change Hand(4) : ";
 		}

@@ -11,7 +11,7 @@
 class Casino : public MainMenu{
 public:
 	Casino();
-	void Bet(int, int& x);
+	void Bet(int, unsigned int& x);
 	void Ccontinue();
 	void ViewB();
 	virtual void GameMenu();
@@ -29,6 +29,6 @@ public:
 	argm outcome;
 	std::vector<argm> outco;
 	std::vector<argm>::iterator it;
-	static int Cbalance;
+	static unsigned int Cbalance;
 };
 #endif

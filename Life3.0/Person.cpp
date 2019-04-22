@@ -17,7 +17,7 @@ void Person::Name() {
 	bonuss = 0;
 	job = 1;
 	counterD++;
-	cout << "Day " << counterD << endl;
+	cout << "\n\nDay " << counterD << endl;
 	string arrname[28] = { "Charles", "Cynthia", "Lea", "Gabriel", "Simon", "William", "Victor",
 	 "Megane", "Audrey", "Sophia", "Charlotte", "Joe", "Laeticia", "Tina", "marieve",
 	"Sandrine", "Andrea", "Micheal", "Sarah-Michelle","Maria", "Jennifer", "Vladimir", "Laurie", "Catherine",
