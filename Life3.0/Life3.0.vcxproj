@@ -157,6 +157,7 @@
     <ClCompile Include="Casino.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Person.cpp" />
+    <ClCompile Include="Poker.cpp" />
     <ClCompile Include="Roulette.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
@@ -167,6 +168,7 @@
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Notes.h" />
     <ClInclude Include="Person.h" />
+    <ClInclude Include="Poker.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Roulette.h" />
   </ItemGroup>
