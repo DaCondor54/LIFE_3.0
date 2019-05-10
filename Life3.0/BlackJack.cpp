@@ -2,18 +2,21 @@
 using namespace std;
 
 //**********Constructor**********n
-BlackJack::BlackJack() {
-	repetir = 0; DDcond = 0; n = 0; som = 0; t = 0; var = 0; vars = 0; w = 0; z = 0; b = 0; bou = 0; condi = 0;
-	x = NULL;
-	y = NULL;
+BlackJack::BlackJack()
+:repetir(0), DDcond(0), n(0), som(0), t(0), var(0), vars(0), w(0), z(0), b(0), bou(0), condi(0), sebastien(0), boby(0)
+//x = NULL;
+{
+	//repetir = 0; DDcond = 0; n = 0; som = 0; t = 0; var = 0; vars = 0; w = 0; z = 0; b = 0; bou = 0; condi = 0, sebastien(0), boby(0)
+	//x = NULL;
+	//y = NULL;
 	x = &var;
 	y = &vars;
 	bustt = &b;
 	changer1 = "\0";
 	changer2 = "\0";
 	changer3 = "\0";
-	sebastien = 0;
-	boby = 0;
+	//sebastien = 0;
+	//boby = 0;
 }
 
 //**********This is beginning to BLACKJACK func**********

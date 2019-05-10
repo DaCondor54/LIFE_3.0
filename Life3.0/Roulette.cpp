@@ -1,8 +1,10 @@
 ﻿#include "Roulette.h"
 using namespace std;
 
-Roulette::Roulette() {
-	n = 0;
+Roulette::Roulette()
+	:n(0), chipsr(0), numberr(0), decision(0), ba(0), place(0), resultr(0), ball(0), place2(0), col(0), wino(0)
+{
+	/*n = 0;
 	chipsr = 0;
 	numberr = 0;
 	decision = 0;
@@ -12,7 +14,7 @@ Roulette::Roulette() {
 	ball = 0;
 	place2 = 0;
 	col = 0;
-	wino = 0;
+	wino = 0;*/
 }
 
 /*

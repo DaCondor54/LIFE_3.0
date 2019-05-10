@@ -3,11 +3,12 @@
 using namespace std;
 
 int main() {
+	//srand((unsigned int)time(NULL));
 	Poker p1;
 	p1.gameMenu();
-
-	/*
-	MainMenu PlayerMain;
-	PlayerMain.MMenu();
-	*/
+	
+	
+	//MainMenu PlayerMain;
+	//PlayerMain.MMenu();
+	
 }

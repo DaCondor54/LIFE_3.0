@@ -2,13 +2,15 @@
 
 using namespace std;
 
-Hangman::Hangman() {
-	rep = 0; error = 0; choice = 0; counter = 0; i = 0; gro = 0; sup = 0;
-	isit = 0; decision = 0, isit2 = 0;
+Hangman::Hangman()
+: rep(0), error(0), choice(0), counter(0), i(0), gro(0), sup(0), isit(0), decision(0), isit2(0), a(0), com(0), death(0)
+{
+	//rep = 0; error = 0; choice = 0; counter = 0; i = 0; gro = 0; sup = 0;
+	//isit = 0; decision = 0, isit2 = 0;
 	x = '\0';
 	special = '\0';
-	a = 0; com = 0;
-	death = 0;
+	//a = 0; com = 0;
+	//death = 0;
 }
 
 void Hangman::GameMenu() {

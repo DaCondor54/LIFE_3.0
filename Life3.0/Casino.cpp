@@ -6,10 +6,11 @@
 using namespace std;
 unsigned int Casino::Cbalance = 0;
 Casino::Casino()
+	: hange(0), pcont(0), cont(&pcont) 
 {
-	hange = 0;
-	pcont = 0;
-	cont = &pcont;
+	//hange = 0;
+	//pcont = 0;
+	//cont = &pcont;
 	q[0] = '\0';
 	outcome.apuesta = 0;
 	outcome.resultado = 0;

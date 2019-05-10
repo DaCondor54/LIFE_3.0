@@ -9,29 +9,32 @@
 using namespace std;
 
 bool MainMenu::job = 1;
+
 unsigned int MainMenu::balance = 0;
 BlackJack *(MainMenu::num1) = new BlackJack;
 Roulette* (MainMenu::num2) = new Roulette;
 Hangman* (MainMenu::num3) = new Hangman;
 MainMenu::MainMenu()
 	/*:num1(NULL), num2(NULL), num3(NULL)*/
+	:response("\0"),TotalE(0), counterD(0), offday(0), gam1(NULL), per1(NULL)
 {
-	job = 1;
+	//job = 1;
 	num1 = NULL;
 	num2 = NULL;
 	num3 = NULL;
-	gam1 = NULL;
-	per1 = NULL;
-	response = "\0";
+	//gam1 = NULL;
+	//per1 = NULL;
+	//response = "\0";
 	srand((unsigned int)time(NULL));
 	balance = rand() % 1000 + 100;
 	Todo[0] = '\0';
-	TotalE = 0;
-	counterD = 0; bonuss = 0; offday = 0;
+	//TotalE = 0;
+	/*counterD = 0;*/ bonuss = 0;/* offday = 0;*/
 
 }
 
 void MainMenu::MMenu() {
+	//srand((unsigned int)time(NULL));
 	BlackJack b1;
     Roulette  r1;
     Hangman h1;

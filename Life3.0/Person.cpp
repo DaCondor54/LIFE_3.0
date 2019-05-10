@@ -1,14 +1,16 @@
 #include "Person.h"
 using namespace std;
 int Person::salaryp = 0;
-Person::Person() {
-	totalm = 0;
+Person::Person()
+	:totalm(0), chanceN(0), ites(0), ite(0), hours(0), odes(0), possibility(0)
+{
+	/*totalm = 0;
 	chanceN = 0;
 	ites = 0;
 	ite = 0;
 	hours = 0;
 	odes = 0;
-	possibility = 0;
+	possibility = 0;*/
 }
 
 void Person::Name() {
