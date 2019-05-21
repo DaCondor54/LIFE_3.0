@@ -60,4 +60,14 @@ seconde red or black, odd or even, 1 to 18, 19 to 36, 12, column
 		 << "      |-----------------------------------------------------------|\n"
 		 << "      |     EVEN     |     RED      |   BLACK      |     ODD      |\n"
 		 << "      |------------------------------------------------------------\n";
+
+		 all factor for the A.i
+		 my hand
+		 personality
+		 the pot
+		 their money on my money
+
+
+
+
 */
