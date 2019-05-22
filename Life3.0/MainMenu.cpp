@@ -25,7 +25,7 @@ MainMenu::MainMenu()
 	//gam1 = NULL;
 	//per1 = NULL;
 	//response = "\0";
-	srand((unsigned int)time(NULL));
+	//srand((unsigned int)time(NULL));
 	balance = rand() % 1000 + 100;
 	Todo[0] = '\0';
 	//TotalE = 0;

@@ -5,8 +5,9 @@
 using namespace std;
 Cards* (Poker::card) = new Cards;
 Poker::Poker()
-	:P_Money(0), P_balance(10000), Pot(0), enterT(0), P_Table(0), Min_Entry(0), Max_Entry(0), contit(0), Everyone_called(0), call_counter(0), I_exit(0),  top_card(0), top_card2(0),
-	choice_P(0), Your_Bet(0), Round_Call(0), Your_Raise(0), Enemy_count(rand() % 6 + 1), enemies(Enemy_count), Min_bet(0), begin_playing(0), stop_playing(0)
+	:My_Table_Money(0), My_Balance(10000), Pot(0), enterT(0), Which_Table(0), Min_Entry(0), Max_Entry(0), contit(0), Everyone_called(0), call_counter(0), I_exit(0), top_card(0), top_card2(0),
+	choice_P(0), Your_Bet(0), Round_Call(0), Your_Raise(0), Enemy_count(rand() % 6 + 1), enemies(Enemy_count), Min_bet(0), begin_playing(0), stop_playing(0), Which_Enemy(0), FourF(0), TrioF(0), PaireF(0),
+	Four_of_a_kind(0), Scounter(0), Scounter2(0), Scounter3(0), biggestC(0), biggestP (0), biggestP2(0), biggestT(0), current_num(0), high_card(0), change_top_card(0), lowest_card(0), Round_counter(0)
 {
 	//cards.value = 0;
 	//cards.suit = '\0';
@@ -15,6 +16,7 @@ Poker::Poker()
 void Poker::gameMenu() {
 	//Cards c1;
 	//card = &c1;
+	Entity me;
 	cout << "\n*******WELCOME TO POKER*******\n";
 	cout << "would you like to enter the table(1) : ";
 	cin >> enterT;
@@ -24,46 +26,72 @@ void Poker::gameMenu() {
 			EnterR();
 			if (Min_Entry != 1) {
 				BuyIn();
+				Round_counter = 0;
 				do {
 					cout << "\nthere are " << Enemy_count << " players in this table\n";
 					this_thread::sleep_for(chrono::seconds(2));
 					first_Round();
 					begin_playing = rand() % (Enemy_count + 1);
 					stop_playing = Enemy_count - begin_playing;
-					do {
 
-						cout << "\nthe " << begin_playing << " player starts playing\n\n";
-						this_thread::sleep_for(chrono::seconds(2));
-						Everyone_called = 0;
-						call_counter = 0;
-						if (Enemy_count == 0) {
-							cout << "you won\n";
-						}
-						else if (begin_playing == 0) {
-							first_round_AI(begin_playing, 0);
-							if (Everyone_called != 1) {
-								PlayerP();
+					do {
+						if (Round_counter == 0) {
+							cout << "\nthe " << begin_playing << " player starts playing\n\n";
+							this_thread::sleep_for(chrono::seconds(1));
+							Everyone_called = 0;
+							call_counter = 0;
+							if (Enemy_count == 0) {
+								cout << "you won\n";
 							}
-						}
-						else if (begin_playing == Enemy_count) {
-							PlayerP();
-							first_round_AI(0, 0);
-						}
-						else {
-							first_round_AI(begin_playing, 0);
-							if (Everyone_called != 1) {
-								PlayerP();
+							else if (begin_playing == 0) {
+								first_round_AI(begin_playing, 0);
 								if (Everyone_called != 1) {
-									first_round_AI(0, stop_playing);
+									PlayerP();
+								}
+							}
+							else if (begin_playing == Enemy_count) {
+								PlayerP();
+								first_round_AI(0, 0);
+							}
+							else {
+
+								first_round_AI(begin_playing, 0);
+								if (Everyone_called != 1) {
+									PlayerP();
+									if (Everyone_called != 1) {
+										first_round_AI(0, stop_playing);
+									}
+								}
+							}
+							for (int i = 0; i < Enemy_count; i++) {
+								if (Your_Bet == enemies[i].their_raise) {
+									call_counter++;
 								}
 							}
 						}
-						for (int i = 0; i < Enemy_count; i++) {
-							if (Your_Bet == enemies[i].their_raise) {
-								call_counter++;
-							}
+						else if (Round_counter == 1) {
+
+							flop();
+							//cout << "hereeeeee\n";
+							me.their_hand = MyHand;
+							enemies.push_back(me);
+							Enemy_count++;
+							//cout << "here\n";
+							CheckResult();
+							//cout << "got aftter check suprising here\n";
+							me.rankingE = enemies[Enemy_count - 1].rankingE;
+							me.Best_Card = enemies[Enemy_count - 1].Best_Card;
+							cout << "\nyour card rank : " << enemies[Enemy_count - 1].rankingE << "\n";
+							cout << "your highest card : " << enemies[Enemy_count - 1].Best_Card << "\n";
+							Enemy_count--;
+							enemies.pop_back();
+
 						}
-					} while (call_counter != Enemy_count && Everyone_called != 1);
+						if (call_counter == Enemy_count && Everyone_called == 1) {
+							Round_counter++;
+						}
+					//	cout << "\nthis is round call :" << Round_counter << endl;
+					} while (/*call_counter != Enemy_count && Everyone_called != 1*/Round_counter < 2);
 
 					cout << "would you like to continue playing at this table(1)  : ";
 					cin >> contit;
@@ -80,8 +108,8 @@ void Poker::gameMenu() {
 						Reset_Table();
 						folded_enemies.clear();
 					}
-					if (P_Money < 3000) {
-						P_Money = 3000;
+					if (My_Table_Money < 3000) {
+						My_Table_Money = 3000;
 						cout << "\nyou got a nice boost\n";
 					}
 				} while (contit == 1);
@@ -137,7 +165,7 @@ void Poker::first_Round() {
 	}
 	cout << "you got a : " << change_name(MyHand[0].value) << " of " << MyHand[0].suit;
 	cout << " and a " << change_name(MyHand[1].value) << " of " << MyHand[1].suit;
-	this_thread::sleep_for(chrono::seconds(2));
+	//this_thread::sleep_for(chrono::seconds(2));
 	//cout << enemies.size();
 	for (int i = 0; i < Enemy_count; i++) {
 		enemies[i].seat = i;
@@ -161,6 +189,7 @@ void Poker::flop() {
 		cout << "the flop is : " << change_name(it1 -> value) << " of " << it1 -> suit << endl;
 	}
 	deck.erase(deck.end() - 3, deck.end());
+	//cout << "hhhhhhhhhhhhhhere\n";
 
 }
 
@@ -202,32 +231,32 @@ void Poker::Reset_Table() {
 void Poker::BuyIn() {
 	do {
 		cout << "\nFor how much would you like to buy in: ";
-		cin >> P_Money;
+		cin >> My_Table_Money;
 		while (cin.fail()) {
 			cout << "\n\n****INVALID BUY IN****\n";
 			cin.clear();
 			cin.ignore(256, '\n');
 			cout << "For how much would you like to buy in: ";
-			cin >> P_Money;
+			cin >> My_Table_Money;
 		}
-		if (P_Money > P_balance) {
+		if (My_Table_Money > My_Balance) {
 			cout << "\n\nYOU DON'T HAVE ENOUGH MONEY\n";
 		}
-		else if (P_Money < Min_Entry) {
+		else if (My_Table_Money < Min_Entry) {
 			cout << "\n\nYOU NEED AT LEAST " << Min_Entry << "$ TOO BUY IN AT THIS TABLE\n";
 		}
-		else if (P_Money > Max_Entry) {
+		else if (My_Table_Money > Max_Entry) {
 			cout << "\n\nYOU CAN'T BUY IN WITH MORE THAN " << Max_Entry << "$\n";
 		}
-	} while (P_Money > P_balance || P_Money  < Min_Entry || P_Money > Max_Entry);
+	} while (My_Table_Money > My_Balance || My_Table_Money  < Min_Entry || My_Table_Money > Max_Entry);
 
 }
 
 void Poker::EnterR() {
 	cout << "\nWhat table would you like to enter\n"
 		<< "5:10(0), 10:20(1), 20:40(2), 50:100(3), 100:200(4) : ";
-	cin >> P_Table;
-	switch (P_Table) {
+	cin >> Which_Table;
+	switch (Which_Table) {
 	case 0: {Min_Entry = 100; Max_Entry = 2000; Min_bet = 10; break; }
 	case 1: {Min_Entry = 200; Max_Entry = 4000; Min_bet = 20; break; }
 	case 2: {Min_Entry = 400; Max_Entry = 8000; Min_bet = 40; break;}
@@ -240,23 +269,25 @@ void Poker::EnterR() {
 		enemies[i].Personality();
 		enemies[i].Total_cash = Max_Entry * rand() % 8 + 2;
 		enemies[i].buy_in_cash = Max_Entry / 2 + rand() % (Max_Entry / 2);
+
 	}
 	Round_Call = Min_bet / 2;
+	Round_counter = 0;
 }
 
 void Poker::Stay() {
 	cout << "you stayed\n";
 }
 void Poker::Call() {
-	if (P_Money < Round_Call) {
-		Your_Bet += P_Money;
-		Pot += P_Money;
-		P_Money = 0;
+	if (My_Table_Money < Round_Call) {
+		Your_Bet += My_Table_Money;
+		Pot += My_Table_Money;
+		My_Table_Money = 0;
 	}
 	else {
 		Your_Bet = Round_Call;
 		Pot += Round_Call;
-		P_Money -= Round_Call;
+		My_Table_Money -= Round_Call;
 	}
 	cout << "you called : " << Your_Bet << "$\n";
 }
@@ -267,21 +298,21 @@ void Poker::Raise() {
 		if (Your_Raise < Round_Call) {
 			cout << "this is not enought\n";
 		}
-		else if (Your_Raise > P_Money) {
+		else if (Your_Raise > My_Table_Money) {
 			cout << "you don't have enough\n";
 		}
-	} while (Your_Raise < Round_Call || Your_Raise > P_Money);
+	} while (Your_Raise < Round_Call || Your_Raise > My_Table_Money);
 	Round_Call = Your_Raise;
 	Your_Bet = Your_Raise;
 	Pot += Your_Raise;
-	P_Money -= Your_Raise;
+	My_Table_Money -= Your_Raise;
 	cout << "you raised : " << Your_Raise << "$\n";
 }
 void Poker::All_In() {
 	
-	Your_Bet += P_Money;
-	Pot = +P_Money;
-	P_Money = 0;
+	Your_Bet += My_Table_Money;
+	Pot = +My_Table_Money;
+	My_Table_Money = 0;
 	if (Your_Bet > Round_Call) {
 		Round_Call = Your_Bet;
 	}
@@ -300,103 +331,130 @@ std::string Poker::change_name(int x) {
 }
 
 void Poker::CheckResult(){
+	//cout << "not  arrived here0\n";
+	for (Which_Enemy = 0; Which_Enemy < Enemy_count; Which_Enemy++) {
+		//cout << "arrived here1\n";
+		Check_full_house();
+		//cout << "arrived here2\n";
+		if (enemies[Which_Enemy].rankingE == 7 || enemies[Which_Enemy].rankingE == 8) {
+			//cout << "arrived here3\n";
+			break;
+		}
+		else {
+			//cout << "arrived here4\n";
+			Check_Straight();
+			//cout << "arrived here5\n";
+			Check_Color();
+			//cout << "arrived here6\n";
+			check_Straight_Flush();
+			//cout << "wow I arrived here7\n";
+		}
+	}
 }
 
 void Poker::Check_Straight() {
-	
-	for (int i = 0; i < Enemy_count; i++) {
-		enemies[i].Straight1 = 0;
-		itsmall = std::min_element(enemies[i].their_hand.begin(), enemies[i].their_hand.end(),
+		//enemies[io].Straight1 = 0;
+	//cout << "alive here1\n";
+		Min_it_1 = std::min_element(enemies[Which_Enemy].their_hand.begin(), enemies[Which_Enemy].their_hand.end(),
 			[](Cards const& S_card, Cards const& S_card2) -> bool {return S_card.value < S_card2.value; });
 
-		itssmall = std::min_element(enemies[i].their_hand.begin(), enemies[i].their_hand.end(),
-			[itsmall = itsmall](Cards const& S_card3, Cards const& S_card4) -> bool
+		Min_it_2 = std::min_element(enemies[Which_Enemy].their_hand.begin(), enemies[Which_Enemy].their_hand.end(),
+			[itsmall = Min_it_1](Cards const& S_card3, Cards const& S_card4) -> bool
 			{ if (itsmall->value != S_card3.value && itsmall->value != S_card4.value) return  S_card3.value < S_card4.value; else  return  S_card3.value > S_card4.value;  });
-		itsmalll = std::min_element(enemies[i].their_hand.begin(), enemies[i].their_hand.end(),
-			[itssmall = itssmall](Cards const& S_card3, Cards const& S_card4) -> bool
+		//cout << "alive here2\n";
+
+		Min_it_3 = std::min_element(enemies[Which_Enemy].their_hand.begin(), enemies[Which_Enemy].their_hand.end(),
+			[itssmall = Min_it_2](Cards const& S_card3, Cards const& S_card4) -> bool
 			{ if (itssmall->value != S_card3.value && itssmall->value != S_card4.value) return  S_card3.value < S_card4.value; else  return  S_card3.value > S_card4.value;  });
-		int Scounter = 0, Scounter2 = 0 , Scounter3 = 0;
+		//cout << "alive here3\n";
+		Scounter = 0; Scounter2 = 0; Scounter3 = 0;
 		
-		sorted_hand = enemies[i].their_hand;
+		sorted_hand = enemies[Which_Enemy].their_hand;
 		sort(sorted_hand.begin(), sorted_hand.end(), [](Cards const& Sorted1, Cards const& Sorted2) -> bool {return Sorted1.value < Sorted2.value; });
-		for (int j = 0; i < 5; j++) {
-			if ((itsmall -> value) + j == sorted_hand[j].value) {
+		//cout << "still alive here4\n";
+		for (int j = 0; j < 5; j++) {
+			if ((Min_it_1 -> value) + j == sorted_hand[j].value) {
 				Scounter++;
 			}
-			if ((itssmall->value) + j == sorted_hand[j+1].value) {
-				Scounter2++;
+			if (sorted_hand.size() > 5) {
+				if ((Min_it_2->value) + j == sorted_hand[j + 1].value) {
+					Scounter2++;
+				}
 			}
-			if ((itsmalll->value) + j == sorted_hand[j + 2].value) {
-				Scounter3++;
+			if (sorted_hand.size() > 6) {
+				if ((Min_it_3->value) + j == sorted_hand[j + 2].value) {
+					Scounter3++;
+				}
 			}
+			//cout << "not dying today here5\n";
 		}
 		if (Scounter == 5 || Scounter2 == 5 || Scounter3 == 5) {
 			//cout << "\nyou have a straight\n";
-			top_card = 5 + (Scounter3 == 5 ? itsmalll->value : Scounter2 == 5 ? itssmall->value : itsmall->value);
-			enemies[i].lowest_S = top_card - 5;
-			enemies[i].rankingE = 5;
-			enemies[i].Straight1 = 1;
+		//	cout << "surprisingly survived wow 6\n";
+			top_card = 5 + (Scounter3 == 5 ? Min_it_3->value : Scounter2 == 5 ? Min_it_2->value : Min_it_1->value);
+			enemies[Which_Enemy].lowest_S = top_card - 5;
+			enemies[Which_Enemy].Best_Card = top_card;
+			enemies[Which_Enemy].rankingE = 5;
+			enemies[Which_Enemy].Straight1 = 1;
 
 
 		}
+		//cout << "this is bullshit 7\n";
 		////card_set.insert(/*card_set.end(),*/ enemies[i].their_hand.begin(), enemies[i].their_hand.end());
 		//auto setI = card_set.find(itsmall->value);
-
-	}
 }
+
 void Poker::Check_Color() {
-	for (int i = 0; i < Enemy_count; i++) {
-		enemies[i].Color1 = 0;
-		int Scounter = 0;
-		int biggestC = 0;
-		int li = 0;
-		std::string current_suit = "\0";
-		std::string biggest_suit = "\0";
-		bool change_top = 1;
-		sorted_hand = enemies[i].their_hand;
+		enemies[Which_Enemy].Color1 = 0;
+		Scounter = 0;
+		biggestC = 0;
+		lowest_card = 0;
+		current_suit = "\0"; biggest_suit = "\0";
+		change_top_card = 1;
+
+		sorted_hand = enemies[Which_Enemy].their_hand;
 		sort(sorted_hand.begin(), sorted_hand.end(), [](Cards const& Sorted1, Cards const& Sorted2) -> bool {return Sorted1.suit < Sorted2.suit; });
+
 		current_suit = sorted_hand[0].suit;
-		li = sorted_hand[0].value;
+		lowest_card = sorted_hand[0].value;
 		for (auto i = sorted_hand.begin(); i != sorted_hand.end(); i++) {
 			//current_suit = i->suit;
 			if (i->suit == current_suit) {
 				//li
 				Scounter++;
-				if (change_top == 1) {
+				if (change_top_card == 1) {
 					top_card = top_card < i->value ? i->value : top_card;
 				}
 			}
 			else {
-				Scounter < 5 ? top_card = i->value : change_top = 0;
+				Scounter < 5 ? top_card = i->value : change_top_card = 0;
 				if (Scounter > biggestC) {
 					biggestC = Scounter;
 					biggest_suit = current_suit;
 				}
 				current_suit = i->suit;
 				Scounter = 1;
-				if (Scounter == 1 && change_top == 1) {
-					li = i->value;
+				if (Scounter == 1 && change_top_card == 1) {
+					lowest_card = i->value;
 				}
 			}
 		}
 		if (biggestC > 4) {
-			enemies[i].rankingE = 6;
-			enemies[i].Color1 = 1;
-			enemies[i].Dominant_Suit = biggest_suit;
-			enemies[i].Lowest_F = li;
-			enemies[i].Highest_F = top_card;
+			enemies[Which_Enemy].rankingE = 6;
+			enemies[Which_Enemy].Color1 = 1;
+			enemies[Which_Enemy].Dominant_Suit = biggest_suit;
+			enemies[Which_Enemy].Lowest_F = lowest_card;
+			enemies[Which_Enemy].Highest_F = top_card;
+			enemies[Which_Enemy].Best_Card = top_card;
 		}
-	}
 }
 
 void Poker::Check_full_house() {
-	for (int io = 0; io < Enemy_count; io++) {
-		int high_card;
-		int Scounter = 0;
-		int current_num = 0;
-		bool TrioF = 0, PaireF = 0;
-		int biggestT = 0, biggestP = 0, biggestP2;
-		sorted_hand = enemies[io].their_hand;
+		Scounter = 0; current_num = 0;
+		TrioF = 0; PaireF = 0; FourF = 0;
+		biggestT = 0; biggestP = 0; biggestP2 = 0; Four_of_a_kind = 0; high_card = 0;
+
+		sorted_hand = enemies[Which_Enemy].their_hand;
 		sort(sorted_hand.begin(), sorted_hand.end(), [](Cards const& Sorted1, Cards const& Sorted2) -> bool {return Sorted1.value < Sorted2.value; });
 		current_num = sorted_hand[0].value;
 		high_card = sorted_hand[0].value;
@@ -406,7 +464,13 @@ void Poker::Check_full_house() {
 			}
 			if (i->value == current_num) {
 				Scounter++;
-				if (Scounter == 3/* && (TrioF == 0 || i -> value > biggestT)*/) {
+				if (Scounter == 4) {
+					Four_of_a_kind = i->value;
+					FourF = 1;
+					//top_card = current_num;
+					break;
+				}
+				if (Scounter == 3 && (i+1) == sorted_hand.end()) {
 					if (i->value > biggestT) {
 						if (biggestP < biggestT) {
 							biggestP = biggestT;
@@ -415,51 +479,48 @@ void Poker::Check_full_house() {
 							biggestT = i->value;
 					}
 					else {
-						biggestT = current_num;
+						if (i->value > biggestP) {
+							biggestP = i->value;
+							PaireF = 1;
+						 }
 					}
-						TrioF = 1;
-						Scounter = 0;
-						current_num = (i + 1)->value;
-					
+					TrioF = 1;
 				}
-				if (Scounter == 2 && TrioF == 0 && (i+1) == sorted_hand.end()) {
-
-					if (i->value > biggestP) {
-						biggestP2 = biggestP;
+				else if(Scounter == 2 && (i + 1) == sorted_hand.end()){
+					if (biggestP < i->value) {
+						biggestP2 = biggestP2 < biggestP ? biggestP : biggestP2;
 						biggestP = i->value;
 					}
 					else {
-						biggestP2 = i->value;
-						PaireF = 1;
+						biggestP2 = biggestP2 < i->value ? i->value : biggestP2;
 					}
 					PaireF = 1;
 				}
-				else if (Scounter == 2 && TrioF != 0) {
-					if((i + 1) == sorted_hand.end()){
-						if (biggestP < i->value) {
-							biggestP2 = biggestP;
-							biggestP = current_num;
-							PaireF = 1;
-							break;
-						}
-					}
-					else if ((i + 1)->value != current_num) {
-						if (biggestP < i->value) {
-							biggestP2 = biggestP;
-							biggestP = current_num;
-							PaireF = 1;
-							break;
-						}
-					}
-				}
 			}
 			else {
-				if (Scounter == 2) {
+				if (Scounter == 3) {
+					if ((i-1)->value > biggestT) {
+						if (biggestP < biggestT) {
+							biggestP = biggestT;
+							PaireF = 1;
+						}
+						biggestT = (i-1)->value;
+					}
+					else {
+						if ((i-1)->value > biggestP) {
+							biggestP = (i-1)->value;
+							PaireF = 1;
+						}
+					}
+					TrioF = 1;
+				}
+				else if (Scounter == 2) {
 					if ((i-1)->value > biggestP) {
-						biggestP2 = biggestP;
+						biggestP2 = biggestP2 < biggestP ? biggestP : biggestP2;
 						biggestP = (i-1)->value;
 					}
 					else {
+						biggestP2 = biggestP2 < i->value ? i->value : biggestP2;
 						biggestP2 = i->value;
 					}
 					PaireF = 1;
@@ -467,39 +528,44 @@ void Poker::Check_full_house() {
 				current_num = i->value;
 				Scounter = 1;
 			}
-			if (PaireF == 1 && TrioF == 1) {
-				
-				enemies[io].rankingE = 8;
-				top_card = biggestT;
-				break;
-			}
-			else if (TrioF == 1 && PaireF != 1) {
-				enemies[io].rankingE = 4;
-				
-				top_card = biggestT;
-			}
-			else if (TrioF != 1 && PaireF == 1)
-			{
-				if (biggestP2 > 0) {
-					enemies[io].rankingE = 3;
-					top_card = biggestP;
-					top_card2 = biggestP2;
-				}
-				else {
-					enemies[io].rankingE = 2;
-					top_card = biggestP;
-				}
+		}
+		if (FourF == 1) {
+			enemies[Which_Enemy].rankingE = 8;
+			top_card = Four_of_a_kind;
+			enemies[Which_Enemy].Best_Card = top_card;
+		}
+		else if (PaireF == 1 && TrioF == 1) {
+			enemies[Which_Enemy].rankingE = 7;
+			top_card = biggestT;
+			enemies[Which_Enemy].Best_Card = top_card;
+		}
+		else if (TrioF == 1 && PaireF != 1) {
+			enemies[Which_Enemy].rankingE = 4;
+			top_card = biggestT;
+			enemies[Which_Enemy].Best_Card = top_card;
+		}
+		else if (TrioF != 1 && PaireF == 1)
+		{
+			if (biggestP2 > 0) {
+				enemies[Which_Enemy].rankingE = 3;
+				top_card = biggestP;
+				enemies[Which_Enemy].Best_Card = top_card;
+				top_card2 = biggestP2;
+				enemies[Which_Enemy].Second_Best_Card = top_card2;
 			}
 			else {
-				enemies[io].rankingE = 1;
-				top_card = high_card;
-				
+				enemies[Which_Enemy].rankingE = 2;
+				top_card = biggestP;
+				enemies[Which_Enemy].Best_Card = top_card;
 			}
 		}
-	
-	}
+		else {
+			enemies[Which_Enemy].rankingE = 1;
+			top_card = high_card;
+			enemies[Which_Enemy].Best_Card = top_card;
+		}
 }
-
+/*
 void Poker::Check_4_of_a_kind() {
 	for (int io = 0; io < Enemy_count; io++) {
 		int Scounter = 0;
@@ -522,16 +588,14 @@ void Poker::Check_4_of_a_kind() {
 			}
 		}
 	}
-}
+}*/
 
 void Poker::check_Straight_Flush() {
-	for (int io = 0; io < Enemy_count; io++) {
-		int counterSF =0;
-		if (enemies[io].Straight1 == 1 && enemies[io].Color1 == 1 && enemies[io].lowest_S == enemies[io].Lowest_F && enemies[io].lowest_S + 5 == enemies[io].Highest_F) {
-			cout << "you have a straight flush";
-			enemies[io].rankingE = 9;
+		if (enemies[Which_Enemy].Straight1 == 1 && enemies[Which_Enemy].Color1 == 1 && enemies[Which_Enemy].lowest_S == enemies[Which_Enemy].Lowest_F && enemies[Which_Enemy].lowest_S + 5 == enemies[Which_Enemy].Highest_F) {
+			cout << "\nyou have a straight flush\n";
+			enemies[Which_Enemy].rankingE = 9;
+			top_card = enemies[Which_Enemy].Highest_F;
 		}
-	}
 }
 
 void Poker::first_round_AI(int first_player, int last_player) {

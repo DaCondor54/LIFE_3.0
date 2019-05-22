@@ -5,7 +5,8 @@
 Entity::Entity()
 	:Call_factor(rand() % 31 + 30), Fold_factor(rand() % 10 + 1), Raise_factor(100 - Call_factor - Fold_factor), seat(0),
 	Has_A_Pair(0), Straight_posibility(0), Same_Color(0), sum_of_cards(0), Hand_level(0), folding_chance(0), Name_Chance(0), Special_Chance(0), initial_formula(0), Enemies_Name("\0"),
-	Call_range(Fold_factor), Fold_range(0), Raise_range(Fold_factor + Call_factor), Total_cash(0), buy_in_cash(0), their_raise(0)
+	Call_range(Fold_factor), Fold_range(0), Raise_range(Fold_factor + Call_factor), Total_cash(0), buy_in_cash(0), their_raise(0), Best_Card(0), Second_Best_Card(0), Color1(0), Straight1(0), Highest_F(0), Lowest_F(0),
+	lowest_S(0), rankingE(0)
 	
 {
 }

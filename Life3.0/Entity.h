@@ -11,7 +11,7 @@ public:
 	void initial_hand_formula();
 	std::string Enemies_Name;
 	int Special_Chance, Name_Chance;
-	int rankingE;
+	int rankingE, Best_Card, Second_Best_Card;
 	bool Color1, Straight1;
 	int lowest_S, Lowest_F, Highest_F;
 	std::string Dominant_Suit;

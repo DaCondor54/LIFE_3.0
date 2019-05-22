@@ -51,9 +51,9 @@ public:
 
 	std::vector<Cards> MyHand; //my hand vector with struct cards
 	std::vector<Cards>::iterator it1;  //my iterator
-	std::vector<Cards>::iterator itsmall;
-	std::vector<Cards>::iterator itssmall;
-	std::vector<Cards>::iterator itsmalll;
+	std::vector<Cards>::iterator Min_it_1;
+	std::vector<Cards>::iterator Min_it_2;
+	std::vector<Cards>::iterator Min_it_3;
 	std::vector<Cards> deck;
 	std::vector<Cards> Discard_Pile;
 	int Enemy_count;
@@ -69,20 +69,22 @@ public:
 private:
 	bool enterT, I_exit/*, Straight1, Color1*/;
 	bool Everyone_called;
-	int call_counter;
-	//int Enemy_count;
+	int call_counter, Round_counter;
 	int begin_playing, stop_playing;
-	int Min_bet;
-	int P_Money;
-	int Pot;
-	int P_balance;
-	int P_Table;
-	int Min_Entry;
-	int Max_Entry;
-	//int ranking;
-	int top_card;
-	int top_card2;
+	int My_Table_Money,  My_Balance;
+	int Which_Table;
+	int Min_Entry, Max_Entry, Min_bet, Pot;
+	int top_card , top_card2, lowest_card;
 	int contit; // *cont
+	int Which_Enemy;
+
+	int Scounter, Scounter2, Scounter3;
+	int current_num;
+	bool TrioF, PaireF, FourF, change_top_card;
+	int biggestC, biggestT, biggestP, biggestP2, Four_of_a_kind, high_card;
+	std::string current_suit, biggest_suit;
+
+
 	enum actionsP {
 		Stay_P, Call_P, Raise_P, AllIn_P
 	
